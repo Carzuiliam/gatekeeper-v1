@@ -15,12 +15,64 @@ class SqliteDatabase(override val connectionString: String) : SqlDatabase(connec
         dataSource.url = connectionString
     }
 
-    override fun performSQLCommand(sqlCommand: String): Boolean {
+    override fun beginTransaction(): Boolean {
         try {
             connection = dataSource.connection
 
             if (connection != null) {
+                connection!!.autoCommit = false
+                inTransactionMode = true
+            }
+        } catch (ex: Exception) {
+            throw ex
+        }
+
+        return true
+    }
+
+    override fun commitTransaction(): Boolean {
+        try {
+            if (connection != null) {
+                connection!!.commit()
+                connection!!.close()
+                connection = null
+                inTransactionMode = false
+            }
+        } catch (ex: Exception) {
+            throw ex
+        }
+
+        return true
+    }
+
+    override fun rollbackTransaction(): Boolean {
+        try {
+            if (connection != null) {
+                connection!!.rollback()
+                connection!!.close()
+                connection = null
+                inTransactionMode = false
+            }
+        } catch (ex: Exception) {
+            throw ex
+        }
+
+        return true
+    }
+
+    override fun performSQLCommand(sqlCommand: String): Boolean {
+        try {
+            if (!inTransactionMode) {
+                connection = dataSource.connection
+            }
+
+            if (connection != null) {
                 connection!!.createStatement().execute(sqlCommand)
+            }
+
+            if (!inTransactionMode) {
+                connection!!.close()
+                connection = null
             }
         } catch (ex: Exception) {
             throw ex
@@ -30,16 +82,25 @@ class SqliteDatabase(override val connectionString: String) : SqlDatabase(connec
     }
 
     override fun performSQLQuery(sqlQuery: String): ResultSet? {
+        var resultSet: ResultSet? = null
+
         try {
-            connection = dataSource.connection
+            if (!inTransactionMode) {
+                connection = dataSource.connection
+            }
 
             if (connection != null) {
-                return connection!!.createStatement().executeQuery(sqlQuery)
+                resultSet = connection!!.createStatement().executeQuery(sqlQuery)
+            }
+
+            if (!inTransactionMode) {
+                connection!!.close()
+                connection = null
             }
         } catch (ex: Exception) {
             throw ex
         }
 
-        return null
+        return resultSet
     }
 }

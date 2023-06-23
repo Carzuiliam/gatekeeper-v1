@@ -1,9 +1,9 @@
-package model
+package entity
 
 import enumerable.AttributeType
 import generic.Configurable
 
-class DataAttribute(val name: String, val type: AttributeType, initFunction: ((DataAttribute) -> Unit)? = null) : Configurable<DataAttribute>(initFunction) {
+class EntityAttribute(val name: String, val type: AttributeType, initFunction: ((EntityAttribute) -> Unit)? = null) : Configurable<EntityAttribute>(initFunction) {
     var primaryKey: Boolean = false
     var foreignKey: Boolean = false
     var foreignTable: String? = null

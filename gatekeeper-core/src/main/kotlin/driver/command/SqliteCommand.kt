@@ -1,17 +1,19 @@
 package driver.command
 
-import model.DataAttribute
+import entity.EntityAttribute
 import enumerable.AttributeType
 import enumerable.OperatorType
-import model.DataEntity
-import model.DataField
-import model.DataFilter
+import entity.EntityClass
+import entity.EntityField
+import entity.EntityFilter
+import entity.EntityRelation
+import enumerable.RelationType
 
 class SqliteCommand : SqlCommand() {
-    override fun create(dataEntity: DataEntity): String {
-        val attributesList = dataEntity.dataAttributes
-        val primaryKeysList = dataEntity.dataAttributes.filter { attr -> attr.primaryKey }
-        val foreignKeysList = dataEntity.dataAttributes.filter { attr -> attr.foreignKey }
+    override fun create(dataEntity: EntityClass): String {
+        val attributesList = dataEntity.entityAttributes
+        val primaryKeysList = dataEntity.entityAttributes.filter { attr -> attr.primaryKey }
+        val foreignKeysList = dataEntity.entityAttributes.filter { attr -> attr.foreignKey }
 
         val sqlStrAttributes = StringBuilder()
         val sqlStrPrimaryKeys = StringBuilder()
@@ -29,7 +31,7 @@ class SqliteCommand : SqlCommand() {
                 sqlStrAttributes.append(" DEFAULT ${defaultValueToSQL(attr)}")
             }
 
-            if (index != attributesList.size - 1) {
+            if (index != attributesList.size - 1 || primaryKeysList.isNotEmpty() || foreignKeysList.isNotEmpty()) {
                 sqlStrAttributes.append(",${System.lineSeparator()}")
             }
         }
@@ -72,14 +74,14 @@ class SqliteCommand : SqlCommand() {
         return sqlStrBuilder.toString()
     }
 
-    override fun insert(dataEntity: DataEntity): String {
-        val dataFieldsList = dataEntity.dataRecord.dataFields
+    override fun insert(dataEntity: EntityClass): String {
+        val dataFieldsList = dataEntity.entityRecord.entityFields
 
         val sqlStrColumns = StringBuilder()
         val sqlStrValues = StringBuilder()
 
         dataFieldsList.forEachIndexed { index, field ->
-            sqlStrColumns.append(field.dataAttribute.name)
+            sqlStrColumns.append(field.entityAttribute.name)
 
             if (index != dataFieldsList.size - 1) {
                 sqlStrColumns.append(", ")
@@ -103,15 +105,15 @@ class SqliteCommand : SqlCommand() {
         return sqlStrBuilder.toString()
     }
 
-    override fun update(dataEntity: DataEntity): String {
-        val dataFieldsList = dataEntity.dataRecord.dataFields
-        val dataFilterList = dataEntity.dataFilter
+    override fun update(dataEntity: EntityClass): String {
+        val dataFieldsList = dataEntity.entityRecord.entityFields
+        val dataFilterList = dataEntity.entityFilter
 
         val sqlStrValues = StringBuilder()
         val sqlStrFilter = StringBuilder()
 
         dataFieldsList.forEachIndexed { index, field ->
-            sqlStrValues.append("  ${field.dataAttribute.name} = ${fieldValueToSQL(field)}")
+            sqlStrValues.append("  ${field.entityAttribute.name} = ${fieldValueToSQL(field)}")
 
             if (index != dataFieldsList.size - 1) {
                 sqlStrValues.append(", ")
@@ -122,7 +124,7 @@ class SqliteCommand : SqlCommand() {
             sqlStrFilter.append("WHERE${lineSeparator}  ")
 
             dataFilterList.forEachIndexed { index, filter ->
-                sqlStrFilter.append("${filter.dataAttribute.name} ${operatorToSQL(filter)} ${filterValueToSQL(filter)}")
+                sqlStrFilter.append("${filter.entityAttribute.name} ${operatorToSQL(filter)} ${filterValueToSQL(filter)}")
 
                 if (index != dataFilterList.size - 1) {
                     sqlStrFilter.append("$lineSeparator  AND ")
@@ -138,8 +140,8 @@ class SqliteCommand : SqlCommand() {
         return sqlStrBuilder.toString()
     }
 
-    override fun delete(dataEntity: DataEntity): String {
-        val dataFilterList = dataEntity.dataFilter
+    override fun delete(dataEntity: EntityClass): String {
+        val dataFilterList = dataEntity.entityFilter
 
         val sqlStrFilter = StringBuilder()
 
@@ -147,7 +149,7 @@ class SqliteCommand : SqlCommand() {
             sqlStrFilter.append("WHERE${lineSeparator}  ")
 
             dataFilterList.forEachIndexed { index, filter ->
-                sqlStrFilter.append("${filter.dataAttribute.name} ${operatorToSQL(filter)} ${filterValueToSQL(filter)}")
+                sqlStrFilter.append("${filter.entityAttribute.name} ${operatorToSQL(filter)} ${filterValueToSQL(filter)}")
 
                 if (index != dataFilterList.size - 1) {
                     sqlStrFilter.append("$lineSeparator  AND ")
@@ -163,8 +165,8 @@ class SqliteCommand : SqlCommand() {
         return sqlStrBuilder.toString()
     }
 
-    override fun select(dataEntity: DataEntity): String {
-        val dataFilterList = dataEntity.dataFilter
+    override fun select(dataEntity: EntityClass): String {
+        val dataFilterList = dataEntity.entityFilter
 
         val sqlStrFilter = StringBuilder()
 
@@ -172,7 +174,7 @@ class SqliteCommand : SqlCommand() {
             sqlStrFilter.append("WHERE${lineSeparator}  ")
 
             dataFilterList.forEachIndexed { index, filter ->
-                sqlStrFilter.append("${filter.dataAttribute.name} ${operatorToSQL(filter)} ${filterValueToSQL(filter)}")
+                sqlStrFilter.append("${filter.entityAttribute.name} ${operatorToSQL(filter)} ${filterValueToSQL(filter)}")
 
                 if (index != dataFilterList.size - 1) {
                     sqlStrFilter.append("$lineSeparator  AND ")
@@ -188,29 +190,83 @@ class SqliteCommand : SqlCommand() {
         return sqlStrBuilder.toString()
     }
 
-    override fun typeToSQL(dataAttribute: DataAttribute): String {
-        return when (dataAttribute.type) {
+    override fun join(dataEntity: EntityClass): String {
+        val dataRelationList = dataEntity.entityRelations
+        val dataFilterList = dataEntity.entityFilter
+
+        val sqlStrJoin = StringBuilder()
+        val sqlStrFilter = StringBuilder()
+
+        if (dataRelationList.isNotEmpty()) {
+            dataRelationList.forEachIndexed { index, rlt ->
+                val primaryKeys = rlt.entityClass.entityAttributes.filter { attr -> attr.primaryKey }
+
+                if (primaryKeys.isNotEmpty()) {
+                    sqlStrJoin.append("  ${joinToSQL(rlt)} ${rlt.entityClass.name} t${index + 2}")
+
+                    primaryKeys.forEachIndexed { idx, key ->
+                        if (idx == 0) {
+                            sqlStrJoin.append(" ON t1.${key.name} = t${index + 2}.${key.name}")
+                        } else {
+                            sqlStrJoin.append(" AND t1.${key.name} = t${index + 2}.${key.name}")
+                        }
+
+                        if (idx != primaryKeys.size - 1) {
+                            sqlStrJoin.append(lineSeparator)
+                        }
+                    }
+                }
+
+                if (index != dataRelationList.size - 1) {
+                    sqlStrJoin.append(lineSeparator)
+                }
+            }
+        }
+
+        if (dataFilterList.isNotEmpty()) {
+            sqlStrFilter.append("WHERE${lineSeparator}  ")
+
+            dataFilterList.forEachIndexed { index, filter ->
+                sqlStrFilter.append("t1.${filter.entityAttribute.name} ${operatorToSQL(filter)} ${filterValueToSQL(filter)}")
+
+                if (index != dataFilterList.size - 1) {
+                    sqlStrFilter.append("$lineSeparator  AND ")
+                }
+            }
+        }
+
+        sqlStrBuilder.clear()
+        sqlStrBuilder.appendLine("SELECT * FROM ${dataEntity.name} t1")
+        sqlStrBuilder.appendLine("$sqlStrJoin")
+        sqlStrBuilder.appendLine("$sqlStrFilter")
+        sqlStrBuilder.appendLine(";")
+
+        return sqlStrBuilder.toString()
+    }
+
+    override fun typeToSQL(entityAttribute: EntityAttribute): String {
+        return when (entityAttribute.type) {
             AttributeType.INTEGER -> "INTEGER"
-            AttributeType.DOUBLE -> "DECIMAL(${dataAttribute.size})"
+            AttributeType.DOUBLE -> "DECIMAL(${entityAttribute.size})"
             AttributeType.STRING -> "TEXT"
             AttributeType.DATETIME -> "DATETIME"
         }
     }
 
-    override fun defaultValueToSQL(dataAttribute: DataAttribute): String {
-        return when (dataAttribute.type) {
+    override fun defaultValueToSQL(entityAttribute: EntityAttribute): String {
+        return when (entityAttribute.type) {
             AttributeType.INTEGER,
             AttributeType.DOUBLE -> {
-                if (dataAttribute.defaultValue != null) {
-                    dataAttribute.defaultValue.toString()
+                if (entityAttribute.defaultValue != null) {
+                    entityAttribute.defaultValue.toString()
                 } else {
                     "NULL"
                 }
             }
             AttributeType.STRING,
             AttributeType.DATETIME -> {
-                if (dataAttribute.defaultValue != null) {
-                    "\'${dataAttribute.defaultValue}\'"
+                if (entityAttribute.defaultValue != null) {
+                    "\'${entityAttribute.defaultValue}\'"
                 } else {
                     "NULL"
                 }
@@ -218,20 +274,20 @@ class SqliteCommand : SqlCommand() {
         }
     }
 
-    override fun fieldValueToSQL(dataField: DataField): String {
-        return when (dataField.dataAttribute.type) {
+    override fun fieldValueToSQL(entityField: EntityField): String {
+        return when (entityField.entityAttribute.type) {
             AttributeType.INTEGER,
             AttributeType.DOUBLE -> {
-                if (dataField.value != null) {
-                    dataField.value.toString()
+                if (entityField.value != null) {
+                    entityField.value.toString()
                 } else {
                     "NULL"
                 }
             }
             AttributeType.STRING,
             AttributeType.DATETIME -> {
-                if (dataField.value != null) {
-                    "\'${dataField.value}\'"
+                if (entityField.value != null) {
+                    "\'${entityField.value}\'"
                 } else {
                     "NULL"
                 }
@@ -239,20 +295,20 @@ class SqliteCommand : SqlCommand() {
         }
     }
 
-    override fun filterValueToSQL(dataFilter: DataFilter): String {
-        return when (dataFilter.dataAttribute.type) {
+    override fun filterValueToSQL(entityFilter: EntityFilter): String {
+        return when (entityFilter.entityAttribute.type) {
             AttributeType.INTEGER,
             AttributeType.DOUBLE -> {
-                if (dataFilter.value != null) {
-                    dataFilter.value.toString()
+                if (entityFilter.value != null) {
+                    entityFilter.value.toString()
                 } else {
                     "NULL"
                 }
             }
             AttributeType.STRING,
             AttributeType.DATETIME -> {
-                if (dataFilter.value != null) {
-                    "\'${dataFilter.value}\'"
+                if (entityFilter.value != null) {
+                    "\'${entityFilter.value}\'"
                 } else {
                     "NULL"
                 }
@@ -260,14 +316,21 @@ class SqliteCommand : SqlCommand() {
         }
     }
 
-    override fun operatorToSQL(dataFilter: DataFilter): String {
-        return when (dataFilter.operatorType) {
-            OperatorType.EQUALS -> "="
+    override fun operatorToSQL(entityFilter: EntityFilter): String {
+        return when (entityFilter.operatorType) {
+            OperatorType.EQUALS -> if (entityFilter.value != null) "=" else "IS"
             OperatorType.NOT_EQUALS -> "<>"
             OperatorType.LESS_THAN -> "<"
             OperatorType.LESS_OR_EQUALS_THAN -> "<="
             OperatorType.GREATER_THAN -> ">"
             OperatorType.GREATER_OR_EQUALS_THAN -> ">="
+        }
+    }
+
+    override fun joinToSQL(entityRelation: EntityRelation): String {
+        return when (entityRelation.relationType) {
+            RelationType.INNER -> "INNER JOIN"
+            RelationType.LEFT -> "LEFT JOIN"
         }
     }
 }

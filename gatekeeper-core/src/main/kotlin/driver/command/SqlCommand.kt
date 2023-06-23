@@ -1,23 +1,26 @@
 package driver.command
 
-import model.DataAttribute
-import model.DataEntity
-import model.DataField
-import model.DataFilter
+import entity.EntityAttribute
+import entity.EntityClass
+import entity.EntityField
+import entity.EntityFilter
+import entity.EntityRelation
 
 abstract class SqlCommand {
     protected val sqlStrBuilder = StringBuilder()
-    protected val lineSeparator = System.lineSeparator()
+    protected val lineSeparator = System.lineSeparator() ?: ""
 
-    abstract fun create(dataEntity: DataEntity): String
-    abstract fun insert(dataEntity: DataEntity): String
-    abstract fun update(dataEntity: DataEntity): String
-    abstract fun delete(dataEntity: DataEntity): String
-    abstract fun select(dataEntity: DataEntity): String
+    abstract fun create(dataEntity: EntityClass): String
+    abstract fun insert(dataEntity: EntityClass): String
+    abstract fun update(dataEntity: EntityClass): String
+    abstract fun delete(dataEntity: EntityClass): String
+    abstract fun select(dataEntity: EntityClass): String
+    abstract fun join(dataEntity: EntityClass): String
 
-    abstract fun typeToSQL(dataAttribute: DataAttribute): String
-    abstract fun defaultValueToSQL(dataAttribute: DataAttribute): String
-    abstract fun fieldValueToSQL(dataField: DataField): String
-    abstract fun filterValueToSQL(dataFilter: DataFilter): String
-    abstract fun operatorToSQL(dataFilter: DataFilter): String
+    abstract fun typeToSQL(entityAttribute: EntityAttribute): String
+    abstract fun defaultValueToSQL(entityAttribute: EntityAttribute): String
+    abstract fun fieldValueToSQL(entityField: EntityField): String
+    abstract fun filterValueToSQL(entityFilter: EntityFilter): String
+    abstract fun operatorToSQL(entityFilter: EntityFilter): String
+    abstract fun joinToSQL(entityRelation: EntityRelation): String
 }

@@ -1,10 +1,10 @@
 package main.kotlin.entities
 
 import enumerable.AttributeType
-import model.DataAttribute
-import model.DataEntity
+import entity.EntityAttribute
+import entity.EntityClass
 
-class CarEntity: DataEntity(CAR) {
+class CarEntity: EntityClass(CAR) {
     companion object {
         const val CAR = "CAR"
         const val CAR_ID = "CAR_ID"
@@ -16,17 +16,17 @@ class CarEntity: DataEntity(CAR) {
     init {
         setAttributes {
             listOf(
-                DataAttribute(CAR_ID, AttributeType.INTEGER) {
+                EntityAttribute(CAR_ID, AttributeType.INTEGER) {
                     it.primaryKey = true
                 },
-                DataAttribute(CAR_MODEL, AttributeType.STRING) {
+                EntityAttribute(CAR_MODEL, AttributeType.STRING) {
                     it.notNull = true
                     it.defaultValue = "Unknown"
                 },
-                DataAttribute(CAR_YEAR, AttributeType.INTEGER) {
+                EntityAttribute(CAR_YEAR, AttributeType.INTEGER) {
                     it.defaultValue = null
                 },
-                DataAttribute(CAR_PRICE, AttributeType.DOUBLE) {
+                EntityAttribute(CAR_PRICE, AttributeType.DOUBLE) {
                     it.size = "10,2"
                     it.defaultValue = 0
                 }
