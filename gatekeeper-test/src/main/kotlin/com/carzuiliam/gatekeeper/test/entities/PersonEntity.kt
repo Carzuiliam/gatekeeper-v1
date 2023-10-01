@@ -1,8 +1,9 @@
-package main.kotlin.com.carzuiliam.gatekeeper.test.entities
+package com.carzuiliam.gatekeeper.test.entities
 
 import com.carzuiliam.gatekeeper.core.entity.EntityAttribute
 import com.carzuiliam.gatekeeper.core.enumerable.AttributeType
 import com.carzuiliam.gatekeeper.core.entity.EntityClass
+import java.util.Date
 
 class PersonEntity: EntityClass(PERSON) {
     companion object {
@@ -10,6 +11,7 @@ class PersonEntity: EntityClass(PERSON) {
         const val PRS_ID = "PRS_ID"
         const val PRS_NAME = "PRS_NAME"
         const val PRS_AGE = "PRS_AGE"
+        const val PRS_BIRTHDAY = "PRS_BIRTHDAY"
     }
 
     init {
@@ -24,6 +26,9 @@ class PersonEntity: EntityClass(PERSON) {
                 EntityAttribute(PRS_AGE, AttributeType.INTEGER) {
                     it.notNull = false
                     it.defaultValue = 0
+                },
+                EntityAttribute(PRS_BIRTHDAY, AttributeType.DATETIME) {
+                    it.notNull = false
                 },
                 EntityAttribute(HouseEntity.HOU_ID, AttributeType.INTEGER) {
                     it.foreignKey = true

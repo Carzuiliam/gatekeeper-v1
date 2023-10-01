@@ -1,11 +1,12 @@
-package main.kotlin.com.carzuiliam.gatekeeper.test.test
+package com.carzuiliam.gatekeeper.test.test
 
 import com.carzuiliam.gatekeeper.core.controller.DatabaseEntity
 import com.carzuiliam.gatekeeper.core.enumerable.RelationType
-import main.kotlin.com.carzuiliam.gatekeeper.test.config.AppConfig
-import main.kotlin.com.carzuiliam.gatekeeper.test.entities.CarEntity
-import main.kotlin.com.carzuiliam.gatekeeper.test.entities.HouseEntity
-import main.kotlin.com.carzuiliam.gatekeeper.test.entities.PersonEntity
+import com.carzuiliam.gatekeeper.test.config.AppConfig
+import com.carzuiliam.gatekeeper.test.entities.CarEntity
+import com.carzuiliam.gatekeeper.test.entities.HouseEntity
+import com.carzuiliam.gatekeeper.test.entities.PersonEntity
+import java.text.SimpleDateFormat
 import org.junit.Assert.assertEquals
 import org.junit.FixMethodOrder
 import org.junit.Test
@@ -35,11 +36,13 @@ class GateKeeperTests {
         prsEntity.setFilter(PersonEntity.PRS_ID, 1)
 
         if (entityDB.select(prsEntity).isEmpty()) {
+            val birthdayDate = SimpleDateFormat("yyyy-MM-dd").parse("1991-12-01")
             prsEntity.clear()
 
             prsEntity[PersonEntity.PRS_ID] = 1
             prsEntity[PersonEntity.PRS_NAME] = "Carlos Carvalho"
             prsEntity[PersonEntity.PRS_AGE] = 31
+            prsEntity[PersonEntity.PRS_BIRTHDAY] = birthdayDate
 
             val pSuccess = entityDB.insert(prsEntity)
             prsEntity.clear()
@@ -47,6 +50,7 @@ class GateKeeperTests {
             prsEntity.setFilter(PersonEntity.PRS_ID, 1)
             prsEntity.setFilter(PersonEntity.PRS_NAME, "Carlos Carvalho")
             prsEntity.setFilter(PersonEntity.PRS_AGE, 31)
+            prsEntity.setFilter(PersonEntity.PRS_BIRTHDAY, birthdayDate)
 
             assertEquals(true, pSuccess && entityDB.select(prsEntity).size == 1)
 
@@ -63,6 +67,7 @@ class GateKeeperTests {
         prsEntity.setFilter(PersonEntity.PRS_ID, 2)
 
         if (entityDB.select(prsEntity).isEmpty()) {
+            val birthdayDate = SimpleDateFormat("yyyy-MM-dd").parse("1991-12-01")
             prsEntity.clear()
 
             val houEntity = HouseEntity()
@@ -77,6 +82,7 @@ class GateKeeperTests {
             prsEntity[PersonEntity.PRS_ID] = 2
             prsEntity[PersonEntity.PRS_NAME] = "Carlos Carvalho (Single)"
             prsEntity[PersonEntity.PRS_AGE] = 31
+            prsEntity[PersonEntity.PRS_BIRTHDAY] = birthdayDate
             prsEntity[HouseEntity.HOU_ID] = 1
 
             val pSuccess = entityDB.insert(prsEntity)
@@ -85,6 +91,7 @@ class GateKeeperTests {
             prsEntity.setFilter(PersonEntity.PRS_ID, 2)
             prsEntity.setFilter(PersonEntity.PRS_NAME, "Carlos Carvalho (Single)")
             prsEntity.setFilter(PersonEntity.PRS_AGE, 31)
+            prsEntity.setFilter(PersonEntity.PRS_BIRTHDAY, birthdayDate)
             prsEntity.setFilter(HouseEntity.HOU_ID, 1)
 
             assertEquals(true, hSuccess && pSuccess && entityDB.select(prsEntity).size == 1)
@@ -102,6 +109,7 @@ class GateKeeperTests {
         prsEntity.setFilter(PersonEntity.PRS_ID, 3)
 
         if (entityDB.select(prsEntity).isEmpty()) {
+            val birthdayDate = SimpleDateFormat("yyyy-MM-dd").parse("1991-12-01")
             prsEntity.clear()
 
             val houEntity = HouseEntity()
@@ -126,6 +134,7 @@ class GateKeeperTests {
             prsEntity[PersonEntity.PRS_ID] = 3
             prsEntity[PersonEntity.PRS_NAME] = "Carlos Carvalho (Full)"
             prsEntity[PersonEntity.PRS_AGE] = 31
+            prsEntity[PersonEntity.PRS_BIRTHDAY] = birthdayDate
             prsEntity[HouseEntity.HOU_ID] = 2
             prsEntity[CarEntity.CAR_ID] = 1
 
@@ -135,6 +144,7 @@ class GateKeeperTests {
             prsEntity.setFilter(PersonEntity.PRS_ID, 3)
             prsEntity.setFilter(PersonEntity.PRS_NAME, "Carlos Carvalho (Full)")
             prsEntity.setFilter(PersonEntity.PRS_AGE, 31)
+            prsEntity.setFilter(PersonEntity.PRS_BIRTHDAY, birthdayDate)
             prsEntity.setFilter(HouseEntity.HOU_ID, 2)
             prsEntity.setFilter(CarEntity.CAR_ID, 1)
 

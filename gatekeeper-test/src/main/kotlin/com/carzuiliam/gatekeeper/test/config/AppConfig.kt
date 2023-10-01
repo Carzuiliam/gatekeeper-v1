@@ -1,4 +1,4 @@
-package main.kotlin.com.carzuiliam.gatekeeper.test.config
+package com.carzuiliam.gatekeeper.test.config
 
 import com.carzuiliam.gatekeeper.core.enumerable.DatabaseType
 import java.io.File

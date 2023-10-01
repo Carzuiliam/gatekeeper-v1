@@ -8,6 +8,7 @@ import com.carzuiliam.gatekeeper.core.entity.EntityField
 import com.carzuiliam.gatekeeper.core.entity.EntityFilter
 import com.carzuiliam.gatekeeper.core.entity.EntityRelation
 import com.carzuiliam.gatekeeper.core.enumerable.RelationType
+import java.util.Date
 
 class SqliteCommand : SqlCommand() {
     override fun create(dataEntity: EntityClass): String {
@@ -284,10 +285,16 @@ class SqliteCommand : SqlCommand() {
                     "NULL"
                 }
             }
-            AttributeType.STRING,
-            AttributeType.DATETIME -> {
+            AttributeType.STRING -> {
                 if (entityField.value != null) {
                     "\'${entityField.value}\'"
+                } else {
+                    "NULL"
+                }
+            }
+            AttributeType.DATETIME -> {
+                if (entityField.value != null) {
+                    "${(entityField.value as Date).toInstant().toEpochMilli()}"
                 } else {
                     "NULL"
                 }
@@ -305,10 +312,16 @@ class SqliteCommand : SqlCommand() {
                     "NULL"
                 }
             }
-            AttributeType.STRING,
-            AttributeType.DATETIME -> {
+            AttributeType.STRING -> {
                 if (entityFilter.value != null) {
                     "\'${entityFilter.value}\'"
+                } else {
+                    "NULL"
+                }
+            }
+            AttributeType.DATETIME -> {
+                if (entityFilter.value != null) {
+                    "${(entityFilter.value as Date).toInstant().toEpochMilli()}"
                 } else {
                     "NULL"
                 }

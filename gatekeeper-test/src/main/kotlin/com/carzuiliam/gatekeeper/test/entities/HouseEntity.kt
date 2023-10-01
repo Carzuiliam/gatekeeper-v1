@@ -1,4 +1,4 @@
-package main.kotlin.com.carzuiliam.gatekeeper.test.entities
+package com.carzuiliam.gatekeeper.test.entities
 
 import com.carzuiliam.gatekeeper.core.entity.EntityAttribute
 import com.carzuiliam.gatekeeper.core.entity.EntityClass
