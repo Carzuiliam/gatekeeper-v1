@@ -1,6 +1,6 @@
 package com.carzuiliam.gatekeeper.test.entities
 
-import com.carzuiliam.gatekeeper.core.enumerable.AttributeType
+import com.carzuiliam.gatekeeper.core.enumerable.EntityAttributeType
 import com.carzuiliam.gatekeeper.core.entity.EntityAttribute
 import com.carzuiliam.gatekeeper.core.entity.EntityClass
 
@@ -16,17 +16,17 @@ class CarEntity: EntityClass(CAR) {
     init {
         setAttributes {
             listOf(
-                EntityAttribute(CAR_ID, AttributeType.INTEGER) {
+                EntityAttribute(CAR_ID, EntityAttributeType.INTEGER) {
                     it.primaryKey = true
                 },
-                EntityAttribute(CAR_MODEL, AttributeType.STRING) {
+                EntityAttribute(CAR_MODEL, EntityAttributeType.STRING) {
                     it.notNull = true
                     it.defaultValue = "Unknown"
                 },
-                EntityAttribute(CAR_YEAR, AttributeType.INTEGER) {
+                EntityAttribute(CAR_YEAR, EntityAttributeType.INTEGER) {
                     it.defaultValue = null
                 },
-                EntityAttribute(CAR_PRICE, AttributeType.DOUBLE) {
+                EntityAttribute(CAR_PRICE, EntityAttributeType.DOUBLE) {
                     it.size = "10,2"
                     it.defaultValue = 0
                 }

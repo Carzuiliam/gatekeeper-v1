@@ -7,17 +7,17 @@ import com.carzuiliam.gatekeeper.core.driver.database.SqliteDatabase
 import com.carzuiliam.gatekeeper.core.entity.EntityClass
 import com.carzuiliam.gatekeeper.core.entity.EntityField
 import com.carzuiliam.gatekeeper.core.entity.EntityRelation
-import com.carzuiliam.gatekeeper.core.enumerable.AttributeType
-import com.carzuiliam.gatekeeper.core.enumerable.DatabaseType
+import com.carzuiliam.gatekeeper.core.enumerable.EntityAttributeType
+import com.carzuiliam.gatekeeper.core.enumerable.EntityDatabaseType
 import java.sql.ResultSet
 
-class DatabaseHandler(databaseType: DatabaseType, connectionString: String) {
+class DatabaseHandler(entityDatabaseType: EntityDatabaseType, connectionString: String) {
     private var sqlCommand: SqlCommand
     private var sqlDatabase: SqlDatabase
 
     init {
-        when (databaseType) {
-            DatabaseType.SQLITE -> {
+        when (entityDatabaseType) {
+            EntityDatabaseType.SQLITE -> {
                 sqlCommand = SqliteCommand()
                 sqlDatabase = SqliteDatabase(connectionString)
             }
@@ -70,10 +70,10 @@ class DatabaseHandler(databaseType: DatabaseType, connectionString: String) {
 
             dataEntity.entityAttributes.forEachIndexed { index, attr ->
                 val value = when (attr.type) {
-                    AttributeType.INTEGER ->  resultSet.getInt(index + 1)
-                    AttributeType.DOUBLE -> resultSet.getDouble(index + 1)
-                    AttributeType.STRING -> resultSet.getString(index + 1)
-                    AttributeType.DATETIME -> resultSet.getDate(index + 1)
+                    EntityAttributeType.INTEGER ->  resultSet.getInt(index + 1)
+                    EntityAttributeType.DOUBLE -> resultSet.getDouble(index + 1)
+                    EntityAttributeType.STRING -> resultSet.getString(index + 1)
+                    EntityAttributeType.DATETIME -> resultSet.getDate(index + 1)
                 }
 
                 entityClass.entityRecord.entityFields.add(EntityField(attr, value))
@@ -95,10 +95,10 @@ class DatabaseHandler(databaseType: DatabaseType, connectionString: String) {
             while (index <= dataEntity.entityAttributes.size) {
                 dataEntity.entityAttributes.forEach { attr ->
                     val value = when (attr.type) {
-                        AttributeType.INTEGER ->  resultSet.getInt(index)
-                        AttributeType.DOUBLE -> resultSet.getDouble(index)
-                        AttributeType.STRING -> resultSet.getString(index)
-                        AttributeType.DATETIME -> resultSet.getDate(index)
+                        EntityAttributeType.INTEGER ->  resultSet.getInt(index)
+                        EntityAttributeType.DOUBLE -> resultSet.getDouble(index)
+                        EntityAttributeType.STRING -> resultSet.getString(index)
+                        EntityAttributeType.DATETIME -> resultSet.getDate(index)
                     }
 
                     entityClass.entityRecord.entityFields.add(EntityField(attr, value))
@@ -112,17 +112,17 @@ class DatabaseHandler(databaseType: DatabaseType, connectionString: String) {
 
                 rlt.entityClass.entityAttributes.forEach { attr ->
                     val value = when (attr.type) {
-                        AttributeType.INTEGER ->  resultSet.getInt(index)
-                        AttributeType.DOUBLE -> resultSet.getDouble(index)
-                        AttributeType.STRING -> resultSet.getString(index)
-                        AttributeType.DATETIME -> resultSet.getDate(index)
+                        EntityAttributeType.INTEGER ->  resultSet.getInt(index)
+                        EntityAttributeType.DOUBLE -> resultSet.getDouble(index)
+                        EntityAttributeType.STRING -> resultSet.getString(index)
+                        EntityAttributeType.DATETIME -> resultSet.getDate(index)
                     }
 
                     relatedEntity.entityRecord.entityFields.add(EntityField(attr, value))
                     index++
                 }
 
-                entityClass.entityRelations.add(EntityRelation(relatedEntity, entityRelation.relationType))
+                entityClass.entityRelations.add(EntityRelation(relatedEntity, entityRelation.entityRelationType))
             }
 
             entityClasses.add(entityClass)

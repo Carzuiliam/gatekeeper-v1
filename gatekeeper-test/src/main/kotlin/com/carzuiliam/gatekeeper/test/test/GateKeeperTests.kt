@@ -1,7 +1,7 @@
 package com.carzuiliam.gatekeeper.test.test
 
 import com.carzuiliam.gatekeeper.core.controller.DatabaseEntity
-import com.carzuiliam.gatekeeper.core.enumerable.RelationType
+import com.carzuiliam.gatekeeper.core.enumerable.EntityRelationType
 import com.carzuiliam.gatekeeper.test.config.AppConfig
 import com.carzuiliam.gatekeeper.test.entities.CarEntity
 import com.carzuiliam.gatekeeper.test.entities.HouseEntity
@@ -195,8 +195,8 @@ class GateKeeperTests {
         val houEntity = HouseEntity()
         val prsEntity = PersonEntity()
 
-        prsEntity.setRelation(houEntity, RelationType.INNER)
-        prsEntity.setRelation(carEntity, RelationType.INNER)
+        prsEntity.setRelation(houEntity, EntityRelationType.INNER)
+        prsEntity.setRelation(carEntity, EntityRelationType.INNER)
 
         val pSize = entityDB.join(prsEntity).size
 
@@ -210,8 +210,8 @@ class GateKeeperTests {
         val houEntity = HouseEntity()
         val prsEntity = PersonEntity()
 
-        prsEntity.setRelation(houEntity, RelationType.LEFT)
-        prsEntity.setRelation(carEntity, RelationType.LEFT)
+        prsEntity.setRelation(houEntity, EntityRelationType.LEFT)
+        prsEntity.setRelation(carEntity, EntityRelationType.LEFT)
 
         val pSize = entityDB.join(prsEntity).size
 

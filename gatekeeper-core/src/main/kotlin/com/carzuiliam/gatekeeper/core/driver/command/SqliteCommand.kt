@@ -1,13 +1,13 @@
 package com.carzuiliam.gatekeeper.core.driver.command
 
 import com.carzuiliam.gatekeeper.core.entity.EntityAttribute
-import com.carzuiliam.gatekeeper.core.enumerable.AttributeType
-import com.carzuiliam.gatekeeper.core.enumerable.OperatorType
+import com.carzuiliam.gatekeeper.core.enumerable.EntityAttributeType
+import com.carzuiliam.gatekeeper.core.enumerable.AttributeOperatorType
 import com.carzuiliam.gatekeeper.core.entity.EntityClass
 import com.carzuiliam.gatekeeper.core.entity.EntityField
 import com.carzuiliam.gatekeeper.core.entity.EntityFilter
 import com.carzuiliam.gatekeeper.core.entity.EntityRelation
-import com.carzuiliam.gatekeeper.core.enumerable.RelationType
+import com.carzuiliam.gatekeeper.core.enumerable.EntityRelationType
 import java.util.Date
 
 class SqliteCommand : SqlCommand() {
@@ -247,25 +247,25 @@ class SqliteCommand : SqlCommand() {
 
     override fun typeToSQL(entityAttribute: EntityAttribute): String {
         return when (entityAttribute.type) {
-            AttributeType.INTEGER -> "INTEGER"
-            AttributeType.DOUBLE -> "DECIMAL(${entityAttribute.size})"
-            AttributeType.STRING -> "TEXT"
-            AttributeType.DATETIME -> "DATETIME"
+            EntityAttributeType.INTEGER -> "INTEGER"
+            EntityAttributeType.DOUBLE -> "DECIMAL(${entityAttribute.size})"
+            EntityAttributeType.STRING -> "TEXT"
+            EntityAttributeType.DATETIME -> "DATETIME"
         }
     }
 
     override fun defaultValueToSQL(entityAttribute: EntityAttribute): String {
         return when (entityAttribute.type) {
-            AttributeType.INTEGER,
-            AttributeType.DOUBLE -> {
+            EntityAttributeType.INTEGER,
+            EntityAttributeType.DOUBLE -> {
                 if (entityAttribute.defaultValue != null) {
                     entityAttribute.defaultValue.toString()
                 } else {
                     "NULL"
                 }
             }
-            AttributeType.STRING,
-            AttributeType.DATETIME -> {
+            EntityAttributeType.STRING,
+            EntityAttributeType.DATETIME -> {
                 if (entityAttribute.defaultValue != null) {
                     "\'${entityAttribute.defaultValue}\'"
                 } else {
@@ -277,22 +277,22 @@ class SqliteCommand : SqlCommand() {
 
     override fun fieldValueToSQL(entityField: EntityField): String {
         return when (entityField.entityAttribute.type) {
-            AttributeType.INTEGER,
-            AttributeType.DOUBLE -> {
+            EntityAttributeType.INTEGER,
+            EntityAttributeType.DOUBLE -> {
                 if (entityField.value != null) {
                     entityField.value.toString()
                 } else {
                     "NULL"
                 }
             }
-            AttributeType.STRING -> {
+            EntityAttributeType.STRING -> {
                 if (entityField.value != null) {
                     "\'${entityField.value}\'"
                 } else {
                     "NULL"
                 }
             }
-            AttributeType.DATETIME -> {
+            EntityAttributeType.DATETIME -> {
                 if (entityField.value != null) {
                     "${(entityField.value as Date).toInstant().toEpochMilli()}"
                 } else {
@@ -304,22 +304,22 @@ class SqliteCommand : SqlCommand() {
 
     override fun filterValueToSQL(entityFilter: EntityFilter): String {
         return when (entityFilter.entityAttribute.type) {
-            AttributeType.INTEGER,
-            AttributeType.DOUBLE -> {
+            EntityAttributeType.INTEGER,
+            EntityAttributeType.DOUBLE -> {
                 if (entityFilter.value != null) {
                     entityFilter.value.toString()
                 } else {
                     "NULL"
                 }
             }
-            AttributeType.STRING -> {
+            EntityAttributeType.STRING -> {
                 if (entityFilter.value != null) {
                     "\'${entityFilter.value}\'"
                 } else {
                     "NULL"
                 }
             }
-            AttributeType.DATETIME -> {
+            EntityAttributeType.DATETIME -> {
                 if (entityFilter.value != null) {
                     "${(entityFilter.value as Date).toInstant().toEpochMilli()}"
                 } else {
@@ -330,20 +330,20 @@ class SqliteCommand : SqlCommand() {
     }
 
     override fun operatorToSQL(entityFilter: EntityFilter): String {
-        return when (entityFilter.operatorType) {
-            OperatorType.EQUALS -> if (entityFilter.value != null) "=" else "IS"
-            OperatorType.NOT_EQUALS -> "<>"
-            OperatorType.LESS_THAN -> "<"
-            OperatorType.LESS_OR_EQUALS_THAN -> "<="
-            OperatorType.GREATER_THAN -> ">"
-            OperatorType.GREATER_OR_EQUALS_THAN -> ">="
+        return when (entityFilter.attributeOperatorType) {
+            AttributeOperatorType.EQUALS -> if (entityFilter.value != null) "=" else "IS"
+            AttributeOperatorType.NOT_EQUALS -> "<>"
+            AttributeOperatorType.LESS_THAN -> "<"
+            AttributeOperatorType.LESS_OR_EQUALS_THAN -> "<="
+            AttributeOperatorType.GREATER_THAN -> ">"
+            AttributeOperatorType.GREATER_OR_EQUALS_THAN -> ">="
         }
     }
 
     override fun joinToSQL(entityRelation: EntityRelation): String {
-        return when (entityRelation.relationType) {
-            RelationType.INNER -> "INNER JOIN"
-            RelationType.LEFT -> "LEFT JOIN"
+        return when (entityRelation.entityRelationType) {
+            EntityRelationType.INNER -> "INNER JOIN"
+            EntityRelationType.LEFT -> "LEFT JOIN"
         }
     }
 }

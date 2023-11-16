@@ -2,7 +2,7 @@ package com.carzuiliam.gatekeeper.test.entities
 
 import com.carzuiliam.gatekeeper.core.entity.EntityAttribute
 import com.carzuiliam.gatekeeper.core.entity.EntityClass
-import com.carzuiliam.gatekeeper.core.enumerable.AttributeType
+import com.carzuiliam.gatekeeper.core.enumerable.EntityAttributeType
 
 class HouseEntity: EntityClass(HOUSE) {
     companion object {
@@ -15,13 +15,13 @@ class HouseEntity: EntityClass(HOUSE) {
     init {
         setAttributes {
             listOf(
-                EntityAttribute(HOU_ID, AttributeType.INTEGER) {
+                EntityAttribute(HOU_ID, EntityAttributeType.INTEGER) {
                     it.primaryKey = true
                 },
-                EntityAttribute(HOU_ADDRESS, AttributeType.STRING) {
+                EntityAttribute(HOU_ADDRESS, EntityAttributeType.STRING) {
                     it.defaultValue = null
                 },
-                EntityAttribute(HOU_NUMBER, AttributeType.STRING) {
+                EntityAttribute(HOU_NUMBER, EntityAttributeType.STRING) {
                     it.defaultValue = null
                 }
             )

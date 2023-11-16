@@ -1,7 +1,7 @@
 package com.carzuiliam.gatekeeper.core.entity
 
-import com.carzuiliam.gatekeeper.core.enumerable.OperatorType
-import com.carzuiliam.gatekeeper.core.enumerable.RelationType
+import com.carzuiliam.gatekeeper.core.enumerable.AttributeOperatorType
+import com.carzuiliam.gatekeeper.core.enumerable.EntityRelationType
 
 open class EntityClass(val name: String) {
     var entityAttributes: List<EntityAttribute> = listOf()
@@ -31,18 +31,18 @@ open class EntityClass(val name: String) {
         }
     }
 
-    fun setFilter(field: String, value: Any?, operatorType: OperatorType = OperatorType.EQUALS) {
+    fun setFilter(field: String, value: Any?, attributeOperatorType: AttributeOperatorType = AttributeOperatorType.EQUALS) {
         val attr = entityAttributes.find {
             it.name == field
         }
 
         if (attr != null) {
-            entityFilter.add(EntityFilter(attr, operatorType, value))
+            entityFilter.add(EntityFilter(attr, attributeOperatorType, value))
         }
     }
 
-    fun setRelation(entityClass: EntityClass, relationType: RelationType) {
-        entityRelations.add(EntityRelation(entityClass, relationType))
+    fun setRelation(entityClass: EntityClass, entityRelationType: EntityRelationType) {
+        entityRelations.add(EntityRelation(entityClass, entityRelationType))
     }
 
     fun getValue(field: String): Any? {

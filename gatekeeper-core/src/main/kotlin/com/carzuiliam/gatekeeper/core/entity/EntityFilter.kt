@@ -1,5 +1,5 @@
 package com.carzuiliam.gatekeeper.core.entity
 
-import com.carzuiliam.gatekeeper.core.enumerable.OperatorType
+import com.carzuiliam.gatekeeper.core.enumerable.AttributeOperatorType
 
-class EntityFilter(val entityAttribute: EntityAttribute, val operatorType: OperatorType, val value: Any?)
+class EntityFilter(val entityAttribute: EntityAttribute, val attributeOperatorType: AttributeOperatorType, val value: Any?)
