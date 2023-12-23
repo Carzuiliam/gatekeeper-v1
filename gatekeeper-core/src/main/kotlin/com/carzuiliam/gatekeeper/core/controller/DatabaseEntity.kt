@@ -1,8 +1,8 @@
-package com.carzuiliam.gatekeeper.core.controller
+package main.kotlin.com.carzuiliam.gatekeeper.core.controller
 
-import com.carzuiliam.gatekeeper.core.driver.handler.DatabaseHandler
-import com.carzuiliam.gatekeeper.core.enumerable.EntityDatabaseType
-import com.carzuiliam.gatekeeper.core.entity.EntityClass
+import main.kotlin.com.carzuiliam.gatekeeper.core.driver.handler.DatabaseHandler
+import main.kotlin.com.carzuiliam.gatekeeper.core.enumerable.EntityDatabaseType
+import main.kotlin.com.carzuiliam.gatekeeper.core.entity.EntityClass
 import java.sql.SQLException
 
 open class DatabaseEntity(entityDatabaseType: EntityDatabaseType, connectionString: String) {

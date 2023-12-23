@@ -1,8 +1,8 @@
-package com.carzuiliam.gatekeeper.test.entities
+package main.kotlin.com.carzuiliam.gatekeeper.test.entities
 
-import com.carzuiliam.gatekeeper.core.entity.EntityAttribute
-import com.carzuiliam.gatekeeper.core.enumerable.EntityAttributeType
-import com.carzuiliam.gatekeeper.core.entity.EntityClass
+import main.kotlin.com.carzuiliam.gatekeeper.core.entity.EntityAttribute
+import main.kotlin.com.carzuiliam.gatekeeper.core.enumerable.EntityAttributeType
+import main.kotlin.com.carzuiliam.gatekeeper.core.entity.EntityClass
 
 class PersonEntity: EntityClass(PERSON) {
     companion object {

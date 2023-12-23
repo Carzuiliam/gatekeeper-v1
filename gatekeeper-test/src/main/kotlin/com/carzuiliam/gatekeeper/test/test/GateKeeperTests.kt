@@ -1,11 +1,11 @@
-package com.carzuiliam.gatekeeper.test.test
+package main.kotlin.com.carzuiliam.gatekeeper.test.test
 
-import com.carzuiliam.gatekeeper.core.controller.DatabaseEntity
-import com.carzuiliam.gatekeeper.core.enumerable.EntityRelationType
-import com.carzuiliam.gatekeeper.test.config.AppConfig
-import com.carzuiliam.gatekeeper.test.entities.CarEntity
-import com.carzuiliam.gatekeeper.test.entities.HouseEntity
-import com.carzuiliam.gatekeeper.test.entities.PersonEntity
+import main.kotlin.com.carzuiliam.gatekeeper.core.controller.DatabaseEntity
+import main.kotlin.com.carzuiliam.gatekeeper.core.enumerable.EntityRelationType
+import main.kotlin.com.carzuiliam.gatekeeper.test.config.AppConfig
+import main.kotlin.com.carzuiliam.gatekeeper.test.entities.CarEntity
+import main.kotlin.com.carzuiliam.gatekeeper.test.entities.HouseEntity
+import main.kotlin.com.carzuiliam.gatekeeper.test.entities.PersonEntity
 import java.text.SimpleDateFormat
 import org.junit.Assert.assertEquals
 import org.junit.FixMethodOrder

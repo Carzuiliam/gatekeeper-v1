@@ -1,13 +1,13 @@
-package com.carzuiliam.gatekeeper.core.driver.command
+package main.kotlin.com.carzuiliam.gatekeeper.core.driver.command
 
-import com.carzuiliam.gatekeeper.core.entity.EntityAttribute
-import com.carzuiliam.gatekeeper.core.enumerable.EntityAttributeType
-import com.carzuiliam.gatekeeper.core.enumerable.AttributeOperatorType
-import com.carzuiliam.gatekeeper.core.entity.EntityClass
-import com.carzuiliam.gatekeeper.core.entity.EntityField
-import com.carzuiliam.gatekeeper.core.entity.EntityFilter
-import com.carzuiliam.gatekeeper.core.entity.EntityRelation
-import com.carzuiliam.gatekeeper.core.enumerable.EntityRelationType
+import main.kotlin.com.carzuiliam.gatekeeper.core.entity.EntityAttribute
+import main.kotlin.com.carzuiliam.gatekeeper.core.enumerable.EntityAttributeType
+import main.kotlin.com.carzuiliam.gatekeeper.core.enumerable.AttributeOperatorType
+import main.kotlin.com.carzuiliam.gatekeeper.core.entity.EntityClass
+import main.kotlin.com.carzuiliam.gatekeeper.core.entity.EntityField
+import main.kotlin.com.carzuiliam.gatekeeper.core.entity.EntityFilter
+import main.kotlin.com.carzuiliam.gatekeeper.core.entity.EntityRelation
+import main.kotlin.com.carzuiliam.gatekeeper.core.enumerable.EntityRelationType
 import java.util.Date
 
 class SqliteCommand : SqlCommand() {

@@ -1,14 +1,14 @@
-package com.carzuiliam.gatekeeper.core.driver.handler
+package main.kotlin.com.carzuiliam.gatekeeper.core.driver.handler
 
-import com.carzuiliam.gatekeeper.core.driver.command.SqlCommand
-import com.carzuiliam.gatekeeper.core.driver.command.SqliteCommand
-import com.carzuiliam.gatekeeper.core.driver.database.SqlDatabase
-import com.carzuiliam.gatekeeper.core.driver.database.SqliteDatabase
-import com.carzuiliam.gatekeeper.core.entity.EntityClass
-import com.carzuiliam.gatekeeper.core.entity.EntityField
-import com.carzuiliam.gatekeeper.core.entity.EntityRelation
-import com.carzuiliam.gatekeeper.core.enumerable.EntityAttributeType
-import com.carzuiliam.gatekeeper.core.enumerable.EntityDatabaseType
+import main.kotlin.com.carzuiliam.gatekeeper.core.driver.command.SqlCommand
+import main.kotlin.com.carzuiliam.gatekeeper.core.driver.command.SqliteCommand
+import main.kotlin.com.carzuiliam.gatekeeper.core.driver.database.SqlDatabase
+import main.kotlin.com.carzuiliam.gatekeeper.core.driver.database.SqliteDatabase
+import main.kotlin.com.carzuiliam.gatekeeper.core.entity.EntityClass
+import main.kotlin.com.carzuiliam.gatekeeper.core.entity.EntityField
+import main.kotlin.com.carzuiliam.gatekeeper.core.entity.EntityRelation
+import main.kotlin.com.carzuiliam.gatekeeper.core.enumerable.EntityAttributeType
+import main.kotlin.com.carzuiliam.gatekeeper.core.enumerable.EntityDatabaseType
 import java.sql.ResultSet
 
 class DatabaseHandler(entityDatabaseType: EntityDatabaseType, connectionString: String) {

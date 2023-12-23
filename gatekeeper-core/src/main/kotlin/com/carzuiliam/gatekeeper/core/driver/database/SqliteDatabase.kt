@@ -1,11 +1,8 @@
-package com.carzuiliam.gatekeeper.core.driver.database
+package main.kotlin.com.carzuiliam.gatekeeper.core.driver.database
 
-import java.io.File
-import java.sql.Connection
-import java.sql.DriverManager
-import java.sql.ResultSet
-import java.sql.Statement
 import org.sqlite.SQLiteDataSource
+import java.sql.Connection
+import java.sql.ResultSet
 
 class SqliteDatabase(override val connectionString: String) : SqlDatabase(connectionString) {
     private val dataSource: SQLiteDataSource = SQLiteDataSource()

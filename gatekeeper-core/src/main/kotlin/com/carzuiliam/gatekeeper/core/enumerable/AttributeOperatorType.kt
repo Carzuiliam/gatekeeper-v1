@@ -1,4 +1,4 @@
-package com.carzuiliam.gatekeeper.core.enumerable
+package main.kotlin.com.carzuiliam.gatekeeper.core.enumerable
 
 enum class AttributeOperatorType {
     EQUALS,

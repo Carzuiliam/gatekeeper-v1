@@ -1,7 +1,7 @@
-package com.carzuiliam.gatekeeper.core.entity
+package main.kotlin.com.carzuiliam.gatekeeper.core.entity
 
-import com.carzuiliam.gatekeeper.core.enumerable.EntityAttributeType
-import com.carzuiliam.gatekeeper.core.generic.Configurable
+import main.kotlin.com.carzuiliam.gatekeeper.core.enumerable.EntityAttributeType
+import main.kotlin.com.carzuiliam.gatekeeper.core.generic.Configurable
 
 class EntityAttribute(val name: String, val type: EntityAttributeType, initFunction: ((EntityAttribute) -> Unit)? = null) : Configurable<EntityAttribute>(initFunction) {
     var primaryKey: Boolean = false

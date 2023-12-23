@@ -1,10 +1,10 @@
-package com.carzuiliam.gatekeeper.core.driver.command
+package main.kotlin.com.carzuiliam.gatekeeper.core.driver.command
 
-import com.carzuiliam.gatekeeper.core.entity.EntityAttribute
-import com.carzuiliam.gatekeeper.core.entity.EntityClass
-import com.carzuiliam.gatekeeper.core.entity.EntityField
-import com.carzuiliam.gatekeeper.core.entity.EntityFilter
-import com.carzuiliam.gatekeeper.core.entity.EntityRelation
+import main.kotlin.com.carzuiliam.gatekeeper.core.entity.EntityAttribute
+import main.kotlin.com.carzuiliam.gatekeeper.core.entity.EntityClass
+import main.kotlin.com.carzuiliam.gatekeeper.core.entity.EntityField
+import main.kotlin.com.carzuiliam.gatekeeper.core.entity.EntityFilter
+import main.kotlin.com.carzuiliam.gatekeeper.core.entity.EntityRelation
 
 abstract class SqlCommand {
     protected val sqlStrBuilder = StringBuilder()

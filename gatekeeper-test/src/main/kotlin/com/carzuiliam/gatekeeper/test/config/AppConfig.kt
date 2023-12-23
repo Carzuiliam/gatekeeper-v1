@@ -1,6 +1,6 @@
-package com.carzuiliam.gatekeeper.test.config
+package main.kotlin.com.carzuiliam.gatekeeper.test.config
 
-import com.carzuiliam.gatekeeper.core.enumerable.EntityDatabaseType
+import main.kotlin.com.carzuiliam.gatekeeper.core.enumerable.EntityDatabaseType
 import java.io.File
 
 class AppConfig {

@@ -1,7 +1,7 @@
-package com.carzuiliam.gatekeeper.core.entity
+package main.kotlin.com.carzuiliam.gatekeeper.core.entity
 
-import com.carzuiliam.gatekeeper.core.enumerable.AttributeOperatorType
-import com.carzuiliam.gatekeeper.core.enumerable.EntityRelationType
+import main.kotlin.com.carzuiliam.gatekeeper.core.enumerable.AttributeOperatorType
+import main.kotlin.com.carzuiliam.gatekeeper.core.enumerable.EntityRelationType
 
 open class EntityClass(val name: String) {
     var entityAttributes: List<EntityAttribute> = listOf()

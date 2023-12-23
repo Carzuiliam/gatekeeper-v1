@@ -1,5 +1,5 @@
-package com.carzuiliam.gatekeeper.core.entity
+package main.kotlin.com.carzuiliam.gatekeeper.core.entity
 
-import com.carzuiliam.gatekeeper.core.enumerable.EntityRelationType
+import main.kotlin.com.carzuiliam.gatekeeper.core.enumerable.EntityRelationType
 
 class EntityRelation(val entityClass: EntityClass, val entityRelationType: EntityRelationType)
