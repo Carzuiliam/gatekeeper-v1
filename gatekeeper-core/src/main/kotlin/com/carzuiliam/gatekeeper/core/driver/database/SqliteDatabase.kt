@@ -18,7 +18,7 @@ class SqliteDatabase(override val connectionString: String) : SqlDatabase(connec
 
             if (connection != null) {
                 connection!!.autoCommit = false
-                inTransactionMode = true
+                isInTransactionMode = true
             }
         } catch (ex: Exception) {
             throw ex
@@ -32,7 +32,7 @@ class SqliteDatabase(override val connectionString: String) : SqlDatabase(connec
             if (connection != null) {
                 connection!!.commit()
                 connection = null
-                inTransactionMode = false
+                isInTransactionMode = false
             }
         } catch (ex: Exception) {
             throw ex
@@ -46,7 +46,7 @@ class SqliteDatabase(override val connectionString: String) : SqlDatabase(connec
             if (connection != null) {
                 connection!!.rollback()
                 connection = null
-                inTransactionMode = false
+                isInTransactionMode = false
             }
         } catch (ex: Exception) {
             throw ex
@@ -57,7 +57,7 @@ class SqliteDatabase(override val connectionString: String) : SqlDatabase(connec
 
     override fun performSQLCommand(sqlCommand: String): Boolean {
         try {
-            if (!inTransactionMode) {
+            if (!isInTransactionMode) {
                 connection = dataSource.connection
             }
 
@@ -65,7 +65,7 @@ class SqliteDatabase(override val connectionString: String) : SqlDatabase(connec
                 connection!!.createStatement().execute(sqlCommand)
             }
 
-            if (!inTransactionMode) {
+            if (!isInTransactionMode) {
                 connection = null
             }
         } catch (ex: Exception) {
@@ -79,7 +79,7 @@ class SqliteDatabase(override val connectionString: String) : SqlDatabase(connec
         var resultSet: ResultSet? = null
 
         try {
-            if (!inTransactionMode) {
+            if (!isInTransactionMode) {
                 connection = dataSource.connection
             }
 
@@ -87,7 +87,7 @@ class SqliteDatabase(override val connectionString: String) : SqlDatabase(connec
                 resultSet = connection!!.createStatement().executeQuery(sqlQuery)
             }
 
-            if (!inTransactionMode) {
+            if (!isInTransactionMode) {
                 connection = null
             }
         } catch (ex: Exception) {

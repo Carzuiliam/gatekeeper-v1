@@ -3,7 +3,7 @@ package main.kotlin.com.carzuiliam.gatekeeper.core.driver.database
 import java.sql.ResultSet
 
 abstract class SqlDatabase(protected open val connectionString: String) {
-    protected var inTransactionMode = false
+    protected var isInTransactionMode = false
 
     abstract fun beginTransaction(): Boolean
     abstract fun commitTransaction(): Boolean

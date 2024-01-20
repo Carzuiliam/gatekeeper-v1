@@ -24,15 +24,15 @@ class DatabaseHandler(entityDatabaseType: EntityDatabaseType, connectionString: 
         }
     }
 
-    fun transaction(): Boolean {
+    fun beginTransaction(): Boolean {
         return sqlDatabase.beginTransaction()
     }
 
-    fun commit(): Boolean {
+    fun commitTransaction(): Boolean {
         return sqlDatabase.commitTransaction()
     }
 
-    fun rollback(): Boolean {
+    fun rollbackTransaction(): Boolean {
         return sqlDatabase.rollbackTransaction()
     }
 
